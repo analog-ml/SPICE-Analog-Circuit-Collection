@@ -88,6 +88,7 @@ Cin opout_dc signal_in 1T
 x1 vss vdd opout_dc opin opout  tan_clia_pin_3
 Cload1 opout 0 'CLOAD'
 
+
 .ac dec 10 1 10G
 
 .control
@@ -95,6 +96,11 @@ Cload1 opout 0 'CLOAD'
     set units=degrees
     set wr_vecnames
     option numdgt=7
+    
+    meas ac gain_bandwidth_product when vdb(opout)=0
+    meas ac phase_margin find vp(opout) when vdb(opout)=0
+    wrdata CLIA_GBW_PM  gain_bandwidth_product phase_margin 
+
     wrdata ac.csv v(opout)
     op
     wrdata dc.csv i(V1)
