@@ -125,11 +125,11 @@ def get_working_region_in_text(region_dict: dict, mosfet_type: dict, seperator="
         vgs = region_dict["vgs_" + d]
         vds = region_dict["vds_" + d]
         vth = region_dict["vth_" + d]
-        # print(mosfet_type[d], vgs, vds, vth)
+
         if mosfet_type[d] == "pfet":
-            region = get_pmos_region(vgs, vds, -1.0652)
+            region = get_pmos_region(vgs, vds, -vth)
         if mosfet_type[d] == "nfet":
-            region = get_nmos_region(vgs, vds, 0.49439)
+            region = get_nmos_region(vgs, vds, vth)
         # print(f"{d} is in {region_mapping[region]} region")
         text_ += f"{d} is in {region_mapping[region]}" + seperator
     return text_
