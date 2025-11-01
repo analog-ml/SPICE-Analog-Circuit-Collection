@@ -1,0 +1,50 @@
+** sch_path: /mnt/c/Users/NITHIN P/2stageopamptry.sch
+
+.lib /home/pham/shared_files/sky130_pdk/libs.tech/ngspice/sky130.lib.spice tt
+
+
+XMN1 net1 minus net2 VSS sky130_fd_pr__nfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMN2 vdiffout plus net2 VSS sky130_fd_pr__nfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMN3 net2 net3 VSS VSS sky130_fd_pr__nfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMN4 net3 net3 VSS VSS sky130_fd_pr__nfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMN5 vout net3 VSS VSS sky130_fd_pr__nfet_01v8 L=0.5 W=6.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMP1 net1 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMP2 vdiffout net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.5 W=0.75 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XMP3 vout vdiffout VDD VDD sky130_fd_pr__pfet_01v8 L=0.5 W=17 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+
+
+I0 VDD net3 30u
+C1 vdiffout vout 3p m=1
+C2 vout VSS 2p m=1
+V1 VDD GND 1.8
+V2 VSS GND -1.8
+V4 net4 minus 0 AC 1
+V5 plus net4 0 AC 1
+V3 net4 GND 1.2
+
+
+
+.ac dec 10 1 10G
+
+.control
+    run
+    set units=degrees
+    set wr_vecnames
+    option numdgt=7
+    wrdata ac.csv v(vout)
+    op
+    wrdata dc.csv i(V1)
+
+    set filetype=ascii
+.endc
+
+.GLOBAL GND
+.end
